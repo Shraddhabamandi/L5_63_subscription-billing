@@ -1,2 +1,0 @@
-billing_system.py:128:1: E302 expected 2 blank lines, found 1
-billing_system.py:135:1: E302 expected 2 blank lines, found 1

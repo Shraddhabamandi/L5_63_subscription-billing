@@ -125,12 +125,14 @@ def active_users():
         if not subscription["invoices"]
     }
 
+
 def encrypt_card(card_number):
     """Encrypt a card number using AES-GCM."""
     nonce = os.urandom(12)
     cipher = AESGCM(CARD_KEY)
     ciphertext = cipher.encrypt(nonce, card_number.encode(), None)
     return (nonce + ciphertext).hex()
+
 
 def verify_webhook(body, signature):
     """Verify a webhook signature securely."""
