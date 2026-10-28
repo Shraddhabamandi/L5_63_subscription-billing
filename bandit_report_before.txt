@@ -1,0 +1,76 @@
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	running on Python 3.13.7
+Run started:2026-10-27 09:14:17.413317+00:00
+
+Test results:
+>> Issue: [B413:blacklist] The pyCrypto library and its module AES are no longer actively maintained and have been deprecated. Consider using pyca/cryptography library.
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b413-import-pycrypto
+   Location: .\billing_system.py:8:0
+7	from mako.template import Template
+8	from Crypto.Cipher import AES
+9	
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'whsec_live_51HxQ2bK'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: .\billing_system.py:14:17
+13	MAX_ATTEMPTS = 3
+14	WEBHOOK_SECRET = "whsec_live_51HxQ2bK"
+15	CARD_KEY = b"billing-key-1234"
+
+--------------------------------------------------
+>> Issue: [B311:blacklist] Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+   Severity: Low   Confidence: High
+   CWE: CWE-330 (https://cwe.mitre.org/data/definitions/330.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b311-random
+   Location: .\billing_system.py:67:29
+66	def couponCode():
+67	    return "SAVE-" + "".join(random.choice("ABCDEFGHJKLMNPQRSTUVWXYZ23456789") for _ in range(6))
+68	
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html
+   Location: .\billing_system.py:85:4
+84	def renderInvoice(user, amount):
+85	    assert amount >= 0
+86	    return Template(u"<h1>Invoice for ${user}</h1><p>Total: Rs.${amount}</p>").render(user=user, amount=amount)
+
+--------------------------------------------------
+>> Issue: [B702:use_of_mako_templates] Mako templates allow HTML/JS rendering by default and are inherently open to XSS attacks. Ensure variables in all templates are properly sanitized via the 'n', 'h' or 'x' flags (depending on context). For example, to HTML escape the variable 'data' do ${ data |h }.
+   Severity: Medium   Confidence: High
+   CWE: CWE-80 (https://cwe.mitre.org/data/definitions/80.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b702_use_of_mako_templates.html
+   Location: .\billing_system.py:86:11
+85	    assert amount >= 0
+86	    return Template(u"<h1>Invoice for ${user}</h1><p>Total: Rs.${amount}</p>").render(user=user, amount=amount)
+87	
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 90
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 3
+		Medium: 1
+		High: 1
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 1
+		High: 4
+Files skipped (0):
